@@ -75,6 +75,8 @@ async function* streamData() {
 }
 
 function iteratorToStream(iterator: any) {
+  const encoder = new TextEncoder();
+
   return new ReadableStream({
     async pull(controller) {
       const { value, done } = await iterator.next();
@@ -82,7 +84,7 @@ function iteratorToStream(iterator: any) {
       if (done) {
         controller.close();
       } else {
-        controller.enqueue(value);
+        controller.enqueue(encoder.encode(value));
       }
     },
   });
