@@ -1,9 +1,4 @@
-import OpenAI from "openai";
 import sleep from "sleep-promise";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export const runtime = "edge";
 
@@ -94,24 +89,6 @@ function iteratorToStream(iterator: any) {
 }
 
 export async function GET(req: Request) {
-  // const { messages } = await req.json();
-  // Create a chat completion using OpenAI
-
-  // const response = await openai.chat.completions.create({
-  //   model: "gpt-3.5-turbo-16k",
-  //   stream: true,
-  //   messages: [
-  //     {
-  //       role: "user",
-  //       content:
-  //         "Return a list of 10 users as a JSON array with the following attributes - name, country, age. Name should be full name. Return only a JSON array, no other text.",
-  //     },
-  //   ],
-  // });
-
-  // @ts-ignore
-  // const stream = OpenAIStream(response);
-
   const stream = iteratorToStream(streamData());
 
   return new Response(stream);

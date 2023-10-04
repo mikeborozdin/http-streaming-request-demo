@@ -9,11 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ai": "^2.2.13",
-    "best-effort-json-parser": "^1.0.1",
     "http-streaming-request": "^2.0.2",
     "next": "latest",
-    "openai": "^4.11.0",
     "react": "latest",
     "react-dom": "latest",
     "sleep-promise": "^9.1.0"
