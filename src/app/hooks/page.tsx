@@ -1,37 +1,32 @@
 "use client";
 
 import { Person } from "@/types/Person";
-import { makeStreamingJsonRequest } from "http-streaming-request";
-import { useState } from "react";
+import { useJsonStreaming } from "http-streaming-request";
 
-const PeopleListWithMakeStreamingJsonRequest: React.FC = () => {
-  const [people, setPeople] = useState<Person[] | null>(null);
+const PeopleListHooks: React.FC = () => {
+  const { data: people, run } = useJsonStreaming<Person[]>({
+    url: "/api/people",
+    method: "GET",
+  });
 
-  const onGetPeopleClick = async () => {
-    for await (const peopleSoFar of makeStreamingJsonRequest<Person[]>({
-      url: "/api/people",
-      method: "GET",
-    })) {
-      setPeople(peopleSoFar);
-    }
+  const onGetPeopleClick = () => {
+    run();
   };
 
   return (
     <>
       <h1 className="text-xl md:text-2xl font-extrabold">
-        http-streaming-request example: makeStreamingJsonRequest()
+        http-streaming-request example: React hooks
       </h1>
 
       <div>
         <p>As simple as:</p>
-        <pre className="bg-black text-white rounded-lg p-2 h-48 w-full overflow-scroll">
+        <pre className="bg-black text-white rounded-lg p-2 w-full overflow-scroll">
           {`
-for await (const peopleSoFar of makeStreamingJsonRequest<Person[]>({
+const { data: people } = useJsonStreaming<Person[]>({
   url: "/api/people",
   method: "GET",
-})) {
-  setPeople(peopleSoFar);
-}
+});
           `}
         </pre>
       </div>
@@ -40,7 +35,7 @@ for await (const peopleSoFar of makeStreamingJsonRequest<Person[]>({
         onClick={onGetPeopleClick}
         className="bg-[#1e56a0] px-4 py-2 rounded-lg font-medium text-white"
       >
-        Run example
+        Re-run example
       </button>
 
       {people && people.length > 0 && (
@@ -67,4 +62,4 @@ for await (const peopleSoFar of makeStreamingJsonRequest<Person[]>({
   );
 };
 
-export default PeopleListWithMakeStreamingJsonRequest;
+export default PeopleListHooks;
